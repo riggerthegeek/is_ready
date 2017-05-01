@@ -9,19 +9,20 @@ node_js:
 matrix:
   fast_finish: true
 
-
 env:
-  - CASSANDRA_HOST=127.0.0.1:7000 ELASTICSEARCH_HOST=127.0.0.1:9200 MONGODB_HOST=127.0.0.1:27017 MYSQL_HOST=127.0.0.1:3306 POSTGRES_HOST=127.0.0.1:5432 RABBITMQ_HOST=127.0.0.1:5672 REDIS_HOST=127.0.0.1:6379
+- CASSANDRA_HOST=127.0.0.1:7000 ELASTICSEARCH_HOST=127.0.0.1:9200 MONGODB_HOST=127.0.0.1:27017
+  MYSQL_HOST=127.0.0.1:3306 POSTGRES_HOST=127.0.0.1:5432 RABBITMQ_HOST=127.0.0.1:5672
+  REDIS_HOST=127.0.0.1:6379
 
 services:
-  - cassandra
-  - elasticsearch
-  - mongodb
-  - mysql
-  - postgresql
-  - rabbitmq
-  - riak
-  - redis
+- cassandra
+- elasticsearch
+- mongodb
+- mysql
+- postgresql
+- rabbitmq
+- riak
+- redis
 
 sudo: false
 
@@ -30,3 +31,13 @@ before_install:
 
 script:
 - npm run ci
+
+deploy:
+  provider: npm
+  email: simon@simonemms.com
+  api_key:
+    secure: FSvt5cL+4v7h71awsTguzkv0q6EQQxVgd7Vv5MEiA/r0ZPdbARwOjFLOefXDtuiz2UoYL9Md2AAstcuRK77E6KSFgHoAjUll1AJNkOyv6xb6mXYCbZU9biqGYUv/oFxuUnZ7/6gNi4d7hPwVEp+x4arH2Wq8PQmB1/2K7UiOAzLS9UPC28kAgygnvxkR/O38HRTHal++uDdDVjY2Lp/C/7JasmTiTaLN3kW+9pAFW9+dwigbWerrZOSBuLfJEsXyEPGy/0FR0PHmhlMOuk/+qY/o77LMXwsbCeaXZwNNuCu+BxDZlzgNbWQql4hlTHJzi1oONXbTAKqwTQGXnvFL0o81wQKaVFKdC/RMbIN36SEog0ilPED5ex7Mzn6DQd99/RAUT+CyCPTda3r2nluAxo9OiE7fOPLekffibxhl/Xe5Bk1g0PVIbm1M2RmwMDVw02E4KT7f1+UcGOm64TZ8sTQtc2OM5BGvBj8pYvAv+CBMYCeshyS7v/jhrt4Adv4Otkn2/gjuzvFcvGX3K2qzpY/6mR6YkTBX4y4jnpLEdDc/2OdC3rIr6DnvAoYbAFV54noCundLYag2m2iGzx1LXUT67x144oLwGh/ZHkM/rbC1NHsVSn4jwkVTqmf/COaqV8N6avABGgfPX2VYqZjaf+uxBZN1TH+MHW/NsPGRLnY=
+  on:
+    all_branches: true
+    tags: true
+    repo: riggerthegeek/is_ready
