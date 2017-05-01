@@ -1,6 +1,6 @@
 {
   "name": "is_ready",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A simple script to check if an endpoint is up yet",
   "bin": {
     "is_ready": "./src/bin/ready.js"
