@@ -9,30 +9,20 @@ node_js:
 matrix:
   fast_finish: true
 
-env:
-- CASSANDRA_HOST=127.0.0.1:7000 ELASTICSEARCH_HOST=127.0.0.1:9200 MONGODB_HOST=127.0.0.1:27017
-  MYSQL_HOST=127.0.0.1:3306 POSTGRES_HOST=127.0.0.1:5432 RABBITMQ_HOST=127.0.0.1:5672
-  REDIS_HOST=127.0.0.1:6379
-
 services:
-- cassandra
 - docker
-- elasticsearch
-- mongodb
-- mysql
-- postgresql
-- rabbitmq
-- riak
-- redis
 
 sudo: required
+
+env:
+  DOCKER_COMPOSE_VERSION: 1.11.2
 
 before_install:
 - date
 
 script:
 - npm install -g json
-- npm run ci
+- docker-compose run app npm run ci
 
 deploy:
   provider: npm
