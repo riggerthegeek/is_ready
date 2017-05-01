@@ -41,3 +41,6 @@ deploy:
     all_branches: true
     tags: true
     repo: riggerthegeek/is_ready
+
+after_deploy:
+  - curl "$DOCKER_WEBHOOK"
