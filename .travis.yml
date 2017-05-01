@@ -45,4 +45,4 @@ deploy:
     repo: riggerthegeek/is_ready
 
 after_deploy:
-  - curl "$DOCKER_WEBHOOK"
+- sh ./trigger_docker.sh
