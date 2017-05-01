@@ -61,11 +61,14 @@ class Ready extends EventEmitter {
 
       socket.setTimeout(this.timeout());
 
-      socket.on('error', err => {
+      let connected = false;
+
+      socket.on('connect', () => {
+        connected = true;
+      }).on('error', err => {
         this.emit('log', `Cannot connect - ${err.message}`);
-      }).on('close', errored => {
-        /* Log the error */
-        const status = errored ? 'unready' : 'ready';
+      }).on('close', () => {
+        const status = connected ? 'ready' : 'unready';
 
         this.emit(status);
       });

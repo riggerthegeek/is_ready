@@ -159,7 +159,8 @@ describe('Ready class', function () {
           expect(this.emit).to.be.calledOnce
             .calledWithExactly('log', 'Attempt 1');
 
-          expect(this.socketInst.on).to.be.calledTwice
+          expect(this.socketInst.on).to.be.calledThrice
+            .calledWith('connect')
             .calledWith('error')
             .calledWith('close');
 
@@ -175,7 +176,9 @@ describe('Ready class', function () {
             .calledWithExactly('unready');
 
           /* Success */
-          on.close(false);
+          on.connect();
+
+          on.close();
 
           expect(this.emit).to.be.calledThrice
             .calledWithExactly('ready');
