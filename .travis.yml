@@ -1,0 +1,28 @@
+language: node_js
+
+node_js:
+- '7'
+- '6'
+- '5'
+- '4'
+
+matrix:
+  fast_finish: true
+
+services:
+  - cassandra
+  - elasticsearch
+  - mongodb
+  - mysql
+  - postgresql
+  - rabbitmq
+  - riak
+  - redis
+
+sudo: false
+
+before_install:
+- date
+
+script:
+- npm run ci
