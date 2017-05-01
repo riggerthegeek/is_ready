@@ -44,34 +44,6 @@ describe('e2e tests', function () {
 
   });
 
-  it('should connect to Cassandra', function (done) {
-
-    const endpoint = process.env.CASSANDRA_HOST;
-
-    const obj = Ready.isReady(endpoint);
-
-    obj.on('end', status => {
-      expect(status).to.be.true;
-
-      done();
-    });
-
-  });
-
-  it('should connect to ElasticSearch', function (done) {
-
-    const endpoint = process.env.ELASTICSEARCH_HOST;
-
-    const obj = Ready.isReady(endpoint);
-
-    obj.on('end', status => {
-      expect(status).to.be.true;
-
-      done();
-    });
-
-  });
-
   it('should connect to MongoDB', function (done) {
 
     const endpoint = process.env.MONGODB_HOST;
