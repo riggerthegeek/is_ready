@@ -16,6 +16,7 @@ env:
 
 services:
 - cassandra
+- docker
 - elasticsearch
 - mongodb
 - mysql
@@ -24,7 +25,7 @@ services:
 - riak
 - redis
 
-sudo: false
+sudo: required
 
 before_install:
 - date
