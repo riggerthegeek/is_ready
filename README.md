@@ -7,6 +7,7 @@ A simple script to check if an endpoint is up yet
 You can use this in a couple of ways:
  - Command line application
  - NodeJS modules
+ - A [Docker container](https://hub.docker.com/r/riggerthegeek/is_ready)
  
 The basic usage is the same in all three ways, with the following parameters:
  - **endpoint**: This is the endpoint that we're testing is up. This is a required field.
