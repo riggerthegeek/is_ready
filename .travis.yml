@@ -32,7 +32,6 @@ before_install:
 
 script:
 - npm install -g json
-- sh ./trigger_docker.sh
 - npm run ci
 
 deploy:
