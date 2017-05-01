@@ -7,27 +7,17 @@ services:
     volumes:
       - .:/opt/is_ready
     environment:
-      - CASSANDRA_HOST=cassandra:7000
-      - ELASTICSEARCH_HOST=elasticsearch:9200
       - MONGODB_HOST=mongodb:27017
       - MYSQL_HOST=mysql:3306
       - POSTGRES_HOST=postgresql:5432
       - RABBITMQ_HOST=rabbitmq:5672
       - REDIS_HOST=redis:6379
     links:
-      - cassandra
-      - elasticsearch
       - mongodb
       - mysql
       - postgresql
       - rabbitmq
       - redis
-
-  cassandra:
-    image: cassandra
-
-  elasticsearch:
-    image: elasticsearch
 
   mongodb:
     image: mongo
