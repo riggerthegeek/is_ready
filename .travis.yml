@@ -18,7 +18,8 @@ env:
   DOCKER_COMPOSE_VERSION: 1.11.2
 
 before_install:
-- date
+- docker --version
+- docker-compose --version
 
 script:
 - npm install -g json
