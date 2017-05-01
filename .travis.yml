@@ -9,6 +9,16 @@ node_js:
 matrix:
   fast_finish: true
 
+
+env:
+  - CASSANDRA_HOST=127.0.0.1:7000
+  - ELASTICSEARCH_HOST=127.0.0.1:9200
+  - MONGODB_HOST=127.0.0.1:27017
+  - MYSQL_HOST=127.0.0.1:3306
+  - POSTGRES_HOST=127.0.0.1:5432
+  - RABBITMQ_HOST=127.0.0.1:5672
+  - REDIS_HOST=127.0.0.1:6379
+
 services:
   - cassandra
   - elasticsearch
