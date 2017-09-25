@@ -15,9 +15,9 @@ const pkg = require('../../package.json');
 
 const cmd = yargs
     .usage('$0 <cmd> [args]')
-    .command('check <endpoint>', 'Check a specific endpoint is ready', {
-      endpoint: {
-        describe: 'The endpoint to check'
+    .command('check <endpoints>', 'Check specific endpoints are ready', {
+      endpoints: {
+        describe: 'The endpoints to check. Can be a comma-separated value.'
       },
       exponential: {
         alias: 'e',
@@ -36,13 +36,13 @@ const cmd = yargs
         type: 'number'
       }
     }, argv => {
-      const obj = Ready.isReady(argv.endpoint, argv);
+      const obj = Ready.allReady(argv.endpoints.split(','), argv);
 
       obj.on('end', status => {
         if (!status) {
           process.exit(1);
         }
-      }).on('log', message => console.log('%s - %s', argv.endpoint, message));
+      }).on('log', (message, endpoint) => console.log('%s - %s', endpoint, message));
     })
     .alias('h', 'help')
     .alias('v', 'version')

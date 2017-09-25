@@ -82,13 +82,13 @@ describe('Ready binary', function () {
       this.Ready.exponential = 'exp';
       this.Ready.timeout = 'timeout';
       this.Ready.tries = 'tries';
-      this.Ready.isReady = sinon.stub()
+      this.Ready.allReady = sinon.stub()
         .returns(this.obj);
 
       this.bin();
 
       expect(this.yargs.command).to.be.calledOnce
-        .calledWith('check <endpoint>', 'Check a specific endpoint is ready', {
+        .calledWith('check <endpoints>', 'Check specific endpoints are ready', {
           exponential: {
             alias: 'e',
             default: 'exp',
@@ -105,8 +105,8 @@ describe('Ready binary', function () {
             describe: 'Number of times to try before failing',
             type: 'number'
           },
-          endpoint: {
-            describe: 'The endpoint to check'
+          endpoints: {
+            describe: 'The endpoints to check. Can be a comma-separated value.'
           }
         });
 
@@ -120,20 +120,20 @@ describe('Ready binary', function () {
 
       const args = {
         arg1: true,
-        endpoint: 'localhost:1234'
+        endpoints: 'localhost:1234'
       };
 
       expect(cmd(args)).to.be.undefined;
 
-      expect(this.Ready.isReady).to.be.calledOnce
-        .calledWithExactly('localhost:1234', args);
+      expect(this.Ready.allReady).to.be.calledOnce
+        .calledWithExactly(['localhost:1234'], args);
 
       this.obj.emit('end', true);
 
-      this.obj.emit('log', 'some message');
+      this.obj.emit('log', 'some message', 'myEndpoint');
 
       expect(log).to.be.calledOnce
-        .calledWithExactly('%s - %s', 'localhost:1234', 'some message');
+        .calledWithExactly('%s - %s', 'myEndpoint', 'some message');
 
       log.restore();
 
@@ -147,13 +147,15 @@ describe('Ready binary', function () {
 
       const args = {
         arg1: true,
-        endpoint: 'localhost:1234'
+        endpoints: 'localhost:1234'
       };
 
       expect(cmd(args)).to.be.undefined;
 
-      expect(this.Ready.isReady).to.be.calledOnce
-        .calledWithExactly('localhost:1234', args);
+      expect(this.Ready.allReady).to.be.calledOnce
+        .calledWithExactly([
+          'localhost:1234'
+        ], args);
 
       this.obj.emit('end', false);
 

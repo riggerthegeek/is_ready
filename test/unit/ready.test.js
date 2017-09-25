@@ -293,7 +293,8 @@ describe('Ready class', function () {
 
           expect(this.emit).to.be.called
             .calledWithExactly('log', 'Not ready. Trying again in 1000ms')
-            .calledWithExactly('log', 'Not ready and run out of attempts');
+            .calledWithExactly('log', 'Not ready and run out of attempts')
+            .calledWithExactly('fail');
 
           done();
         });
@@ -331,6 +332,71 @@ describe('Ready class', function () {
 
     });
 
+    describe('#allReady', function () {
+
+      beforeEach(function () {
+        /* Stop it triggering */
+        sinon.stub(this.Ready.prototype, 'exec');
+
+        this.eventEmitter1 = new EventEmitter();
+        this.eventEmitter2 = new EventEmitter();
+
+        const test = sinon.stub(this.Ready.prototype, 'test');
+
+        test.onCall(0)
+          .returns(this.eventEmitter1);
+
+        test.onCall(1)
+          .returns(this.eventEmitter2);
+
+        this.obj = this.Ready.allReady(['someUrl', 'someUrl2'], {
+          exponential: true,
+          timeout: 10000,
+          tries: 2
+        });
+
+        expect(this.obj).to.be.instanceof(EventEmitter);
+
+        expect(test).to.be.calledTwice
+          .calledWithExactly();
+      });
+
+      it('should simulate a successful call', function (done) {
+        this.obj.on('end', (connected) => {
+          expect(connected).to.be.true;
+
+          done();
+        });
+
+        this.eventEmitter1.emit('end', false);
+        this.eventEmitter1.emit('end', true);
+        this.eventEmitter2.emit('end', true);
+      });
+
+      it('should listen for a fail event', function (done) {
+        this.obj.on('end', (connected) => {
+          expect(connected).to.be.false;
+
+          done();
+        });
+
+        this.eventEmitter1.emit('end', true);
+        this.eventEmitter2.emit('fail');
+      });
+
+      it('should listen for a log event', function (done) {
+        this.obj.on('log', (message, endpoint) => {
+          expect(message).to.be.equal('some message');
+          expect(endpoint).to.be.equal('someUrl2');
+
+          done();
+        });
+
+        this.eventEmitter2.emit('log', 'some message');
+      });
+
+    });
+
     describe('#isReady', function () {
 
       it('should call the test with all the params', function () {
@@ -354,6 +420,9 @@ describe('Ready class', function () {
           timeout: 1234,
           tries: 2
         });
+
+        expect(test).to.be.calledOnce
+          .calledWithExactly();
       });
 
 

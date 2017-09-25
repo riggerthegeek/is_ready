@@ -132,6 +132,7 @@ class Ready extends EventEmitter {
 
         this.running = false;
 
+        this.emit('fail');
         this.emit('end', false);
       });
 
@@ -154,13 +155,60 @@ class Ready extends EventEmitter {
   }
 
   /**
+   * All Ready
+   *
+   * To be used when you want to check multiple
+   * endpoints for readiness
+   *
+   * @param {string[]} endpoints
+   * @param {object} opts
+   * @returns {EventEmitter}
+   */
+  static allReady (endpoints, opts) {
+    const emitter = new EventEmitter();
+
+    const status = [];
+
+    emitter.once('fail', () => {
+      /* Signal a failure */
+      emitter.emit('end', false);
+    });
+
+    endpoints.forEach((endpoint) => {
+      const obj = new Ready(endpoint, opts);
+
+      obj.test()
+        .on('end', (isRunning) => {
+          if (isRunning) {
+            /* This endpoint is running */
+            status.push(endpoint);
+
+            /* Check if the others are all running now */
+            if (status.length === endpoints.length) {
+              /* All are ready */
+              emitter.emit('end', true);
+            }
+          }
+        })
+        .on('fail', () => {
+          emitter.emit('fail');
+        })
+        .on('log', (msg) => {
+          emitter.emit('log', msg, endpoint);
+        });
+    });
+
+    return emitter;
+  }
+
+  /**
    * Is Ready
    *
    * Factory method that everything should be using
    *
    * @param {string} endpoint
-   * @param {*} opts
-   * @returns {*}
+   * @param {object} opts
+   * @returns {EventEmitter}
    */
   static isReady (endpoint, opts) {
     const obj = new Ready(endpoint, opts);
